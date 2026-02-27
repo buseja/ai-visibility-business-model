@@ -300,7 +300,7 @@
     <div class="container">
         <div class="hero-badge">Validace poptávky — MVP — Únor 2026</div>
         <h1>AI Visibility Checker<br><span>Business Model</span></h1>
-        <p class="hero-sub">Validace poptávky na českém trhu. Free audit jako lead magnet, placený report za 399 Kč. Cíl: break-even při 7 % konverzi.</p>
+        <p class="hero-sub">Ověřujeme poptávku na českém trhu. Free audit jako lead magnet, placený report za 399 Kč. Při nákladu 3 Kč na audit nám stačí necelé 1 % konverze na break-even.</p>
 
         <div class="score-demo">
             <div class="score-circle" style="--pct: 38%">
@@ -320,11 +320,11 @@
                 <div class="metric-label">Cena plného reportu</div>
             </div>
             <div class="metric">
-                <div class="metric-value" style="color: var(--green)">7,1 %</div>
+                <div class="metric-value" style="color: var(--green)">0,9 %</div>
                 <div class="metric-label">Break-even konverze</div>
             </div>
             <div class="metric">
-                <div class="metric-value" style="color: var(--yellow)">25 Kč</div>
+                <div class="metric-value" style="color: var(--yellow)">3 Kč</div>
                 <div class="metric-label">Náklad na free audit</div>
             </div>
             <div class="metric">
@@ -341,30 +341,30 @@
         <div class="section-header">
             <div class="section-number">01</div>
             <h2>Proč jednorázová platba, <span>ne SaaS</span></h2>
-            <p class="section-sub">V MVP fázi validujeme jednu věc: zaplatí někdo za zjištění své AI viditelnosti? SaaS stavíme až po důkazu.</p>
+            <p class="section-sub">V MVP fázi ověřujeme jednu věc: zaplatí někdo za zjištění své AI viditelnosti? SaaS stavíme až po důkazu.</p>
         </div>
 
         <div class="why-grid reveal">
             <div class="why-card selected">
                 <h3><span style="font-size: 24px;">✓</span> Jednorázový report — 399 Kč</h3>
                 <ul>
-                    <li>Postavíš za 2–3 týdny (platební brána + paywall)</li>
-                    <li>Validace poptávky do 30 dní od spuštění</li>
-                    <li>Nízký tech debt — žádný billing, dashboard, automatizace</li>
+                    <li>Postavíme za 2–3 týdny (platební brána + paywall)</li>
+                    <li>Poptávku ověříme do 30 dní od spuštění</li>
+                    <li>Minimum tech debtu — žádný billing, dashboard, automatizace</li>
                     <li>Zákazník dostane okamžitou hodnotu bez závazku</li>
                     <li>Jasný signál: buď platí, nebo ne</li>
-                    <li>Data pro rozhodnutí o SaaS (konverze, feedback)</li>
+                    <li>Získáme data pro rozhodnutí o SaaS (konverze, feedback)</li>
                 </ul>
             </div>
             <div class="why-card rejected">
                 <h3><span style="font-size: 24px;">✗</span> SaaS předplatné — teď ne</h3>
                 <ul>
                     <li>Vývoj 2–3 měsíce (opakovaný billing, dashboard, alerting, trendy)</li>
-                    <li>Validace až po měsících — churn vidíš nejdřív v měsíci 2</li>
-                    <li>Vysoký tech debt na začátku bez důkazu demand</li>
+                    <li>Výsledky uvidíme nejdřív v měsíci 2–3 (churn)</li>
+                    <li>Hodně tech debtu na začátku bez ověřené poptávky</li>
                     <li>Zákazník nechce platit měsíčně za něco, co nezná</li>
-                    <li>Riziko: postavíš infra a nikdo neplatí</li>
-                    <li>Předčasná optimalizace = zabijáck MVP</li>
+                    <li>Riziko: postavíme infrastrukturu a nikdo neplatí</li>
+                    <li>Předčasná optimalizace = zabiják MVP</li>
                 </ul>
             </div>
         </div>
@@ -374,11 +374,11 @@
             <div class="code-block" style="margin: 12px 0 0;">
 <span class="comment">// Krok 1: Validuj poptávku (30 dní)</span>
 if (konverze > 7% && plateb > 20) {
-    <span class="highlight">→ GO: Začni stavět SaaS monitoring (490–990 Kč/měs)</span>
+    <span class="highlight">→ GO: Stavíme SaaS monitoring (490–990 Kč/měs)</span>
 } else if (konverze 3-7%) {
-    <span class="warn">→ PIVOT: Uprav paywall, testuj cenu, opakuj</span>
+    <span class="warn">→ PIVOT: Upravíme paywall, testujeme cenu, opakujeme</span>
 } else {
-    <span class="bad">→ STOP: Přehodnoť produkt nebo segment</span>
+    <span class="bad">→ STOP: Přehodnotíme produkt nebo cílový segment</span>
 }
             </div>
         </div>
@@ -497,7 +497,7 @@ if (konverze > 7% && plateb > 20) {
                 </div>
                 <div class="calc-field">
                     <label>Náklad na free audit</label>
-                    <input type="range" id="calcFreeCost" min="5" max="50" value="25" step="1">
+                    <input type="range" id="calcFreeCost" min="0" max="50" value="3" step="1">
                     <div class="calc-value"><span id="calcFreeCostVal">25</span><small>Kč</small></div>
                 </div>
                 <div class="calc-field">
@@ -505,6 +505,10 @@ if (konverze > 7% && plateb > 20) {
                     <input type="range" id="calcPaidCost" min="20" max="100" value="50" step="5">
                     <div class="calc-value"><span id="calcPaidCostVal">50</span><small>Kč</small></div>
                 </div>
+            </div>
+
+            <div style="text-align: right; margin-top: -16px; margin-bottom: 16px;">
+                <button id="resetCalc" style="background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 16px; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;">Reset</button>
             </div>
 
             <!-- Cost breakdown bar -->
@@ -586,7 +590,7 @@ if (konverze > 7% && plateb > 20) {
         <div class="section-header">
             <div class="section-number">05</div>
             <h2>Finanční <span>model</span></h2>
-            <p class="section-sub">Break-even při 7,1 % konverzi. Ziskový od 8 %.</p>
+            <p class="section-sub">Při nákladu 3 Kč na free audit nám stačí pod 1 % konverze na break-even. Tabulka ukazuje marži při různých konverzních poměrech.</p>
         </div>
 
         <div class="table-wrap reveal" style="margin-bottom: 32px;">
@@ -595,11 +599,12 @@ if (konverze > 7% && plateb > 20) {
                     <tr><th>Konverze</th><th>Leadů na platbu</th><th>Náklad leady</th><th>+ Paid audit</th><th>Celkem</th><th>Výsledek</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td class="mono">3 %</td><td class="mono">33</td><td class="mono">825 Kč</td><td class="mono">50 Kč</td><td class="mono">875 Kč</td><td><span class="tag tag-red">−476 Kč</span></td></tr>
-                    <tr><td class="mono">5 %</td><td class="mono">20</td><td class="mono">500 Kč</td><td class="mono">50 Kč</td><td class="mono">550 Kč</td><td><span class="tag tag-red">−151 Kč</span></td></tr>
-                    <tr style="background: rgba(59, 130, 246, 0.05);"><td class="mono" style="color: var(--blue); font-weight: 700;">7,1 %</td><td class="mono">14</td><td class="mono">350 Kč</td><td class="mono">50 Kč</td><td class="mono">400 Kč</td><td><span class="tag tag-yellow">±0 Kč (BE)</span></td></tr>
-                    <tr><td class="mono">10 %</td><td class="mono">10</td><td class="mono">250 Kč</td><td class="mono">50 Kč</td><td class="mono">300 Kč</td><td><span class="tag tag-green">+99 Kč</span></td></tr>
-                    <tr><td class="mono">15 %</td><td class="mono">7</td><td class="mono">175 Kč</td><td class="mono">50 Kč</td><td class="mono">225 Kč</td><td><span class="tag tag-green">+174 Kč</span></td></tr>
+                    <tr style="background: rgba(59, 130, 246, 0.05);"><td class="mono" style="color: var(--blue); font-weight: 700;">0,9 %</td><td class="mono">112</td><td class="mono">336 Kč</td><td class="mono">50 Kč</td><td class="mono">386 Kč</td><td><span class="tag tag-yellow">~0 Kč (BE)</span></td></tr>
+                    <tr><td class="mono">3 %</td><td class="mono">33</td><td class="mono">99 Kč</td><td class="mono">50 Kč</td><td class="mono">149 Kč</td><td><span class="tag tag-green">+250 Kč</span></td></tr>
+                    <tr><td class="mono">5 %</td><td class="mono">20</td><td class="mono">60 Kč</td><td class="mono">50 Kč</td><td class="mono">110 Kč</td><td><span class="tag tag-green">+289 Kč</span></td></tr>
+                    <tr><td class="mono">8 %</td><td class="mono">13</td><td class="mono">39 Kč</td><td class="mono">50 Kč</td><td class="mono">89 Kč</td><td><span class="tag tag-green">+310 Kč</span></td></tr>
+                    <tr><td class="mono">10 %</td><td class="mono">10</td><td class="mono">30 Kč</td><td class="mono">50 Kč</td><td class="mono">80 Kč</td><td><span class="tag tag-green">+319 Kč</span></td></tr>
+                    <tr><td class="mono">15 %</td><td class="mono">7</td><td class="mono">21 Kč</td><td class="mono">50 Kč</td><td class="mono">71 Kč</td><td><span class="tag tag-green">+328 Kč</span></td></tr>
                 </tbody>
             </table>
         </div>
@@ -691,12 +696,12 @@ Perplexity, Gemini.</div><p style="margin-top: 8px;"><span class="tag tag-blue">
         <div class="section-header">
             <div class="section-number">07</div>
             <h2>KPI & <span>Rozhodování</span></h2>
-            <p class="section-sub">Po 30 dnech vyhodnotit. Go / Pivot / Stop.</p>
+            <p class="section-sub">Po 30 dnech vyhodnotíme. Go / Pivot / Stop.</p>
         </div>
 
         <h3 style="margin-bottom: 16px;">Primární KPI</h3>
         <div class="kpi-grid reveal">
-            <div class="kpi-card"><h4>Konverze Free → Paid</h4><div class="value" style="color: var(--green);">&gt; 7 %</div><div class="desc">Break-even bod. Pod 5 % problém s hodnotou.</div><div class="progress-bar"><div class="progress-fill" style="width: 71%; background: var(--green);"></div></div></div>
+            <div class="kpi-card"><h4>Konverze Free → Paid</h4><div class="value" style="color: var(--green);">&gt; 5 %</div><div class="desc">Break-even už pod 1 %, ale 5 %+ chceme pro zdravý byznys.</div><div class="progress-bar"><div class="progress-fill" style="width: 71%; background: var(--green);"></div></div></div>
             <div class="kpi-card"><h4>Počet plateb / 30 dní</h4><div class="value" style="color: var(--blue);">&gt; 20</div><div class="desc">Statisticky relevantní vzorek.</div><div class="progress-bar"><div class="progress-fill" style="width: 50%; background: var(--blue);"></div></div></div>
             <div class="kpi-card"><h4>CPA (cena za platbu)</h4><div class="value" style="color: var(--yellow);">&lt; 399 Kč</div><div class="desc">Meta Ads + AI kredity.</div><div class="progress-bar"><div class="progress-fill" style="width: 60%; background: var(--yellow);"></div></div></div>
             <div class="kpi-card"><h4>Free auditů / den</h4><div class="value" style="color: var(--purple);">&gt; 10</div><div class="desc">Pokud méně, problém je distribuce.</div><div class="progress-bar"><div class="progress-fill" style="width: 40%; background: var(--purple);"></div></div></div>
@@ -707,10 +712,10 @@ Perplexity, Gemini.</div><p style="margin-top: 8px;"><span class="tag tag-blue">
             <table>
                 <thead><tr><th>Výsledek</th><th>Konverze</th><th>Rozhodnutí</th><th>Akce</th></tr></thead>
                 <tbody>
-                    <tr><td><span class="tag tag-green">GO</span></td><td class="mono">&gt; 7 %</td><td>Unit economics fungují</td><td>Škáluj, začni SaaS</td></tr>
-                    <tr><td><span class="tag tag-yellow">PIVOT</span></td><td class="mono">3–7 %</td><td>Demand existuje, cena nesedí</td><td>Uprav paywall, testuj cenu</td></tr>
-                    <tr><td><span class="tag tag-red">STOP</span></td><td class="mono">&lt; 3 %</td><td>Nedostatečná hodnota</td><td>Změň report nebo segment</td></tr>
-                    <tr><td><span class="tag tag-orange">FIX DISTRO</span></td><td class="mono">—</td><td>Málo auditů (&lt; 5/den)</td><td>Problém v kampaních</td></tr>
+                    <tr><td><span class="tag tag-green">GO</span></td><td class="mono">&gt; 5 %</td><td>Unit economics fungují</td><td>Škálujeme, stavíme SaaS</td></tr>
+                    <tr><td><span class="tag tag-yellow">PIVOT</span></td><td class="mono">1–5 %</td><td>Poptávka existuje, ladíme</td><td>Upravíme paywall, testujeme cenu</td></tr>
+                    <tr><td><span class="tag tag-red">STOP</span></td><td class="mono">&lt; 1 %</td><td>Nedostatečná vnímaná hodnota</td><td>Změníme report nebo segment</td></tr>
+                    <tr><td><span class="tag tag-orange">FIX DISTRO</span></td><td class="mono">—</td><td>Málo auditů (&lt; 5/den)</td><td>Problém v kampaních, ne v produktu</td></tr>
                 </tbody>
             </table>
         </div>
@@ -723,18 +728,18 @@ Perplexity, Gemini.</div><p style="margin-top: 8px;"><span class="tag tag-blue">
         <div class="section-header">
             <div class="section-number">08</div>
             <h2>MVP <span>Roadmap</span></h2>
-            <p class="section-sub">Validace poptávky → Optimalizace → SaaS. Každý krok podmíněný výsledky předchozího.</p>
+            <p class="section-sub">Ověření poptávky → Optimalizace → SaaS. Každý krok podmíněný výsledky předchozího.</p>
         </div>
 
         <div class="timeline reveal">
-            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 1: Validace poptávky <span class="tag tag-blue" style="margin-left: 8px;">Nyní → 30 dní</span></h4><p>Free audit + report 399 Kč. Meta Ads 500 Kč/den. Cíl: 20+ plateb, konverze &gt; 7 %.</p></div>
-            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 2: Optimalizace <span class="tag tag-green" style="margin-left: 8px;">Měsíc 2–3</span></h4><p>A/B test paywallu, škálování budgetu. Cíl: snížit CPA pod 300 Kč.</p></div>
-            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 3: SaaS <span class="tag tag-purple" style="margin-left: 8px;">Měsíc 4+</span></h4><p>Monthly monitoring 490–990 Kč/měs. Upsell existujících. Cíl: 50 předplatitelů, MRR 25 000+ Kč.</p></div>
+            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 1: Ověření poptávky <span class="tag tag-blue" style="margin-left: 8px;">Nyní → 30 dní</span></h4><p>Spustíme free audit + report za 399 Kč. Meta Ads 500 Kč/den. Potřebujeme 20+ plateb.</p></div>
+            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 2: Optimalizace <span class="tag tag-green" style="margin-left: 8px;">Měsíc 2–3</span></h4><p>A/B testujeme paywall, škálujeme budget na to, co funguje. Chceme CPA pod 300 Kč.</p></div>
+            <div class="timeline-item"><div class="timeline-dot"><div class="timeline-dot-inner"></div></div><h4>Fáze 3: SaaS <span class="tag tag-purple" style="margin-left: 8px;">Měsíc 4+</span></h4><p>Nasadíme monthly monitoring za 490–990 Kč/měs. Upsell z existující báze. Cílíme na 50 předplatitelů, MRR 25 000+ Kč.</p></div>
         </div>
 
         <div class="callout reveal" style="margin-top: 48px;">
-            <div class="callout-title">Pravidlo MVP</div>
-            <p>Nestavíme SaaS dokud nemáme důkaz, že lidé platí za jednorázový report. 30 dní, 15 000 Kč na ads, 20+ plateb = GO.</p>
+            <div class="callout-title">Naše pravidlo</div>
+            <p>SaaS nestavíme, dokud nemáme důkaz, že lidé platí za jednorázový report. 30 dní, 15 000 Kč na ads, 20+ plateb = GO.</p>
         </div>
     </div>
 </section>
@@ -790,7 +795,7 @@ function updateCalc() {
     const leadsPerPayment = Math.ceil(100 / conv);
     const costPerPayment = leadsPerPayment * freeCost + paidCost;
     const margin = price - costPerPayment;
-    const beConv = (freeCost / (price - paidCost)) * 100;
+    const beConv = freeCost > 0 ? (freeCost / (price - paidCost)) * 100 : 0;
 
     $('resBEVal').textContent = beConv.toFixed(1) + ' %';
     $('resMarginVal').textContent = (margin >= 0 ? '+' : '') + fmt(Math.round(margin)) + ' Kč';
@@ -804,19 +809,19 @@ function updateCalc() {
     $('resCPA').className = 'calc-result ' + (costPerPayment < price ? 'positive' : 'negative');
 
     // Cost breakdown bar
-    const aiPct = Math.round(freeCost * 0.45);
-    const scrapePct = Math.round(freeCost * 0.28);
-    const infraPct = Math.round(freeCost * 0.18);
-    const otherPct = freeCost - aiPct - scrapePct - infraPct;
-    const total = freeCost;
-    $('costBarAI').style.width = (aiPct/total*100) + '%';
-    $('costBarAI').textContent = aiPct + ' Kč';
-    $('costBarScrape').style.width = (scrapePct/total*100) + '%';
-    $('costBarScrape').textContent = scrapePct + ' Kč';
-    $('costBarInfra').style.width = (infraPct/total*100) + '%';
-    $('costBarInfra').textContent = infraPct + ' Kč';
-    $('costBarOther').style.width = (otherPct/total*100) + '%';
-    $('costBarOther').textContent = otherPct + ' Kč';
+    const total = freeCost || 1;
+    const aiAmt = freeCost * 0.45;
+    const scrapeAmt = freeCost * 0.28;
+    const infraAmt = freeCost * 0.18;
+    const otherAmt = Math.max(0, freeCost - Math.round(aiAmt) - Math.round(scrapeAmt) - Math.round(infraAmt));
+    $('costBarAI').style.width = (aiAmt/total*100) + '%';
+    $('costBarAI').textContent = freeCost > 2 ? Math.round(aiAmt) + ' Kč' : '';
+    $('costBarScrape').style.width = (scrapeAmt/total*100) + '%';
+    $('costBarScrape').textContent = freeCost > 4 ? Math.round(scrapeAmt) + ' Kč' : '';
+    $('costBarInfra').style.width = (infraAmt/total*100) + '%';
+    $('costBarInfra').textContent = freeCost > 8 ? Math.round(infraAmt) + ' Kč' : '';
+    $('costBarOther').style.width = (otherAmt/total*100) + '%';
+    $('costBarOther').textContent = '';
     $('costTotalLabel').textContent = fmt(freeCost);
 
     // Monthly simulation
@@ -1031,6 +1036,21 @@ function drawChart(price, freeCost, paidCost) {
 
 const var_blue = '#3B82F6';
 const var_text = '#f0f0f5';
+
+// Default values for reset
+const defaults = { price: 399, conv: 8, freeCost: 3, paidCost: 50, adsBudget: 15000, cpc: 12, lpConv: 40 };
+
+// Reset button
+$('resetCalc').addEventListener('click', function() {
+    sliders.price.value = defaults.price;
+    sliders.conv.value = defaults.conv;
+    sliders.freeCost.value = defaults.freeCost;
+    sliders.paidCost.value = defaults.paidCost;
+    sliders.adsBudget.value = defaults.adsBudget;
+    sliders.cpc.value = defaults.cpc;
+    sliders.lpConv.value = defaults.lpConv;
+    updateCalc();
+});
 
 // Bind sliders
 Object.values(sliders).forEach(s => s.addEventListener('input', updateCalc));
