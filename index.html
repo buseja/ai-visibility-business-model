@@ -480,10 +480,30 @@ if (konverze > 7% && plateb > 20) {
         <div class="section-header">
             <div class="section-number">04</div>
             <h2>Interaktivní <span>kalkulačka</span></h2>
-            <p class="section-sub">Měň cenu, konverzní poměr a náklady. Graf ukazuje break-even bod v reálném čase.</p>
+            <p class="section-sub">Kompletní model akvizice: Meta Ads → Landing page → Free audit → Platba. Všechny náklady na jednom místě.</p>
         </div>
 
         <div class="calc-wrap reveal">
+            <h3 style="margin-bottom: 12px; font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Meta Ads (zdroj trafficu)</h3>
+            <div class="calc-inputs">
+                <div class="calc-field">
+                    <label>Meta Ads budget / měsíc</label>
+                    <input type="range" id="calcAdsBudget" min="5000" max="50000" value="15000" step="1000">
+                    <div class="calc-value"><span id="calcAdsBudgetVal">15 000</span><small>Kč</small></div>
+                </div>
+                <div class="calc-field">
+                    <label>CPC (cena za klik)</label>
+                    <input type="range" id="calcCPC" min="3" max="30" value="12" step="1">
+                    <div class="calc-value"><span id="calcCPCVal">12</span><small>Kč</small></div>
+                </div>
+                <div class="calc-field">
+                    <label>LP → Lead konverze</label>
+                    <input type="range" id="calcLPConv" min="10" max="60" value="40" step="5">
+                    <div class="calc-value"><span id="calcLPConvVal">40</span><small>%</small></div>
+                </div>
+            </div>
+
+            <h3 style="margin: 24px 0 12px; font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Produkt a konverze</h3>
             <div class="calc-inputs">
                 <div class="calc-field">
                     <label>Cena reportu</label>
@@ -498,7 +518,7 @@ if (konverze > 7% && plateb > 20) {
                 <div class="calc-field">
                     <label>Náklad na free audit</label>
                     <input type="range" id="calcFreeCost" min="0" max="50" value="3" step="1">
-                    <div class="calc-value"><span id="calcFreeCostVal">25</span><small>Kč</small></div>
+                    <div class="calc-value"><span id="calcFreeCostVal">3</span><small>Kč</small></div>
                 </div>
                 <div class="calc-field">
                     <label>Náklad na paid audit</label>
@@ -511,75 +531,74 @@ if (konverze > 7% && plateb > 20) {
                 <button id="resetCalc" style="background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 16px; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;">Reset</button>
             </div>
 
-            <!-- Cost breakdown bar -->
-            <h3 style="margin-bottom: 4px; font-size: 14px;">Rozpad nákladu na 1 free audit (<span id="costTotalLabel">25</span> Kč)</h3>
-            <div class="cost-bar" id="costBar">
-                <div style="background: var(--blue); width: 40%;" id="costBarAI">AI modely</div>
-                <div style="background: var(--purple); width: 30%;" id="costBarScrape">Scraping</div>
-                <div style="background: var(--orange); width: 20%;" id="costBarInfra">Infra</div>
-                <div style="background: var(--green); width: 10%;" id="costBarOther">Ostatní</div>
-            </div>
-            <div class="cost-legend">
-                <span><span class="dot" style="background: var(--blue);"></span>AI modely (GPT-4o, Gemini, Perplexity)</span>
-                <span><span class="dot" style="background: var(--purple);"></span>Scraping (Firecrawl, SerpAPI)</span>
-                <span><span class="dot" style="background: var(--orange);"></span>Infrastruktura (hosting, Make.com)</span>
-                <span><span class="dot" style="background: var(--green);"></span>Ostatní (email, storage)</span>
+            <!-- Funnel vizualizace -->
+            <div class="calc-funnel" style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px; padding: 16px 20px; background: var(--bg-sunken); border-radius: var(--radius-md); overflow-x: auto;">
+                <div style="text-align: center; flex: 1; min-width: 100px;">
+                    <div class="mono" style="font-size: 18px; font-weight: 700;" id="funnelClicks">1 250</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Kliků</div>
+                    <div style="font-size: 11px; color: var(--text-muted);" id="funnelClicksCost">× 12 Kč</div>
+                </div>
+                <div style="color: var(--text-muted); font-size: 20px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 100px;">
+                    <div class="mono" style="font-size: 18px; font-weight: 700;" id="funnelLeads">500</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Free auditů</div>
+                    <div style="font-size: 11px; color: var(--text-muted);" id="funnelLeadsCost">× 3 Kč</div>
+                </div>
+                <div style="color: var(--text-muted); font-size: 20px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 100px;">
+                    <div class="mono" style="font-size: 18px; font-weight: 700; color: var(--blue);" id="funnelPaid">40</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Platících</div>
+                    <div style="font-size: 11px; color: var(--text-muted);" id="funnelPaidCost">× 50 Kč</div>
+                </div>
+                <div style="color: var(--text-muted); font-size: 20px;">→</div>
+                <div style="text-align: center; flex: 1; min-width: 100px;">
+                    <div class="mono" style="font-size: 18px; font-weight: 700;" id="funnelRevenue">15 960 Kč</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Tržby</div>
+                    <div style="font-size: 11px; color: var(--text-muted);" id="funnelRevenuePrice">× 399 Kč</div>
+                </div>
             </div>
 
             <!-- Results -->
-            <div class="calc-results" style="margin-top: 28px;">
-                <div class="calc-result" id="resBreakeven">
-                    <div class="val" id="resBEVal">7.1 %</div>
-                    <div class="lbl">Break-even konverze</div>
-                </div>
-                <div class="calc-result" id="resMargin">
-                    <div class="val" id="resMarginVal">+24 Kč</div>
-                    <div class="lbl">Marže na platbu</div>
+            <div class="calc-results">
+                <div class="calc-result" id="resProfit">
+                    <div class="val" id="resProfitVal">+0 Kč</div>
+                    <div class="lbl">Výsledek / měsíc</div>
                 </div>
                 <div class="calc-result" id="resCPA">
-                    <div class="val" id="resCPAVal">363 Kč</div>
-                    <div class="lbl">CPA (cena za platbu)</div>
+                    <div class="val" id="resCPAVal">375 Kč</div>
+                    <div class="lbl">CPA (celkem na platbu)</div>
                 </div>
-                <div class="calc-result info" id="resLeads">
-                    <div class="val" id="resLeadsVal">13</div>
-                    <div class="lbl">Leadů na 1 platbu</div>
+                <div class="calc-result" id="resROAS">
+                    <div class="val" id="resROASVal">1.06×</div>
+                    <div class="lbl">ROAS</div>
+                </div>
+                <div class="calc-result info" id="resAdsCostPerLead">
+                    <div class="val" id="resAdsCostPerLeadVal">30 Kč</div>
+                    <div class="lbl">Cena za lead (ads)</div>
                 </div>
             </div>
 
+            <!-- Cost breakdown per payment -->
+            <h3 style="margin-top: 24px; margin-bottom: 4px; font-size: 14px;">Rozpad CPA — náklady na 1 platbu (<span id="cpaTotalLabel">375</span> Kč)</h3>
+            <div class="cost-bar" id="costBar">
+                <div style="background: var(--red); width: 60%;" id="costBarAds">Meta Ads</div>
+                <div style="background: var(--blue); width: 25%;" id="costBarAudit">Free audity</div>
+                <div style="background: var(--purple); width: 15%;" id="costBarPaid">Paid audit</div>
+            </div>
+            <div class="cost-legend">
+                <span><span class="dot" style="background: var(--red);"></span>Meta Ads (CPC × kliky na 1 platbu)</span>
+                <span><span class="dot" style="background: var(--blue);"></span>Free audity (náklad × leady na 1 platbu)</span>
+                <span><span class="dot" style="background: var(--purple);"></span>Paid audit (generování reportu)</span>
+            </div>
+
+            <!-- Detailed breakdown -->
+            <div id="costBreakdown" class="code-block" style="margin-top: 16px;"></div>
+
             <!-- Chart -->
-            <h3 style="margin-top: 16px;">Break-even graf</h3>
+            <h3 style="margin-top: 28px;">Break-even graf (měsíční)</h3>
             <div class="chart-container">
                 <canvas id="beChart"></canvas>
             </div>
-        </div>
-
-        <!-- Monthly simulation -->
-        <h3 style="margin-top: 48px; margin-bottom: 16px;">Měsíční simulace (Meta Ads 15 000 Kč)</h3>
-        <div class="calc-wrap reveal" style="padding: 24px 32px;">
-            <div class="calc-inputs" style="margin-bottom: 20px;">
-                <div class="calc-field">
-                    <label>Meta Ads budget / měsíc</label>
-                    <input type="range" id="calcAdsBudget" min="5000" max="50000" value="15000" step="1000">
-                    <div class="calc-value"><span id="calcAdsBudgetVal">15 000</span><small>Kč</small></div>
-                </div>
-                <div class="calc-field">
-                    <label>CPC (cena za klik)</label>
-                    <input type="range" id="calcCPC" min="5" max="30" value="12" step="1">
-                    <div class="calc-value"><span id="calcCPCVal">12</span><small>Kč</small></div>
-                </div>
-                <div class="calc-field">
-                    <label>LP → Lead konverze</label>
-                    <input type="range" id="calcLPConv" min="10" max="60" value="40" step="5">
-                    <div class="calc-value"><span id="calcLPConvVal">40</span><small>%</small></div>
-                </div>
-            </div>
-            <div class="calc-results">
-                <div class="calc-result info"><div class="val" id="simClicks">1 250</div><div class="lbl">Kliků / měsíc</div></div>
-                <div class="calc-result info"><div class="val" id="simLeads">500</div><div class="lbl">Free auditů</div></div>
-                <div class="calc-result info"><div class="val" id="simPaid">40</div><div class="lbl">Platících</div></div>
-                <div class="calc-result" id="simProfit"><div class="val" id="simProfitVal">−5 000 Kč</div><div class="lbl">Výsledek / měsíc</div></div>
-            </div>
-            <div id="simBreakdown" class="code-block" style="margin-top: 16px;"></div>
         </div>
     </div>
 </section>
@@ -590,15 +609,27 @@ if (konverze > 7% && plateb > 20) {
         <div class="section-header">
             <div class="section-number">05</div>
             <h2>Finanční <span>model</span></h2>
-            <p class="section-sub">Tabulka se přepočítává podle parametrů v kalkulačce výše. Změňte cenu nebo náklady a čísla se aktualizují.</p>
+            <p class="section-sub">Měsíční projekce včetně Meta Ads. Přepočítává se podle parametrů v kalkulačce.</p>
         </div>
 
+        <h3 style="margin-bottom: 16px;">Scénáře podle konverzního poměru</h3>
         <div class="table-wrap reveal" style="margin-bottom: 32px;">
             <table>
                 <thead>
-                    <tr><th>Konverze</th><th>Leadů na platbu</th><th>Náklad leady</th><th>+ Paid audit</th><th>Celkem</th><th>Výsledek</th></tr>
+                    <tr><th>Konverze</th><th>Platících</th><th>Tržby</th><th>Meta Ads</th><th>Audit náklady</th><th>Celkové náklady</th><th>Výsledek</th></tr>
                 </thead>
                 <tbody id="finTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-bottom: 16px;">Scénáře podle Meta Ads budgetu</h3>
+        <div class="table-wrap reveal" style="margin-bottom: 32px;">
+            <table>
+                <thead>
+                    <tr><th>Budget / měs.</th><th>Kliků</th><th>Leadů</th><th>Platících</th><th>Tržby</th><th>Celkové náklady</th><th>Výsledek</th></tr>
+                </thead>
+                <tbody id="finTableBudget">
                 </tbody>
             </table>
         </div>
@@ -611,7 +642,7 @@ if (konverze > 7% && plateb > 20) {
         <div class="section-header">
             <div class="section-number">06</div>
             <h2>Meta Ads <span>Strategie</span></h2>
-            <p class="section-sub">Cold → Retargeting → Konverze. Budget 500 Kč/den, 30denní test.</p>
+            <p class="section-sub">Cold → Retargeting → Konverze. Budget a CPC nastavíte v kalkulačce výše.</p>
         </div>
 
         <h3 style="margin-bottom: 16px;">Funnel</h3>
@@ -774,58 +805,16 @@ const sliders = {
 
 function fmt(n) { return n.toLocaleString('cs-CZ'); }
 
-function updateCalc() {
-    const price = +sliders.price.value;
-    const conv = +sliders.conv.value;
-    const freeCost = +sliders.freeCost.value;
-    const paidCost = +sliders.paidCost.value;
+// Core formula: everything flows from Meta Ads → LP → Free audit → Paid
+// CPA = (adsCostPerLead + freeCost) × leadsPerPayment + paidCost
+// where adsCostPerLead = CPC / (lpConv / 100)
+// and leadsPerPayment = 100 / conversionRate
 
-    $('calcPriceVal').textContent = fmt(price);
-    $('calcConvVal').textContent = conv;
-    $('calcFreeCostVal').textContent = fmt(freeCost);
-    $('calcPaidCostVal').textContent = fmt(paidCost);
-
-    // Break-even calc
+function calcModel(price, conv, freeCost, paidCost, adsBudget, cpc, lpConv) {
+    const adsCostPerLead = cpc / (lpConv / 100);
     const leadsPerPayment = Math.ceil(100 / conv);
-    const costPerPayment = leadsPerPayment * freeCost + paidCost;
-    const margin = price - costPerPayment;
-    const beConv = freeCost > 0 ? (freeCost / (price - paidCost)) * 100 : 0;
-
-    $('resBEVal').textContent = beConv.toFixed(1) + ' %';
-    $('resMarginVal').textContent = (margin >= 0 ? '+' : '') + fmt(Math.round(margin)) + ' Kč';
-    $('resCPAVal').textContent = fmt(Math.round(costPerPayment)) + ' Kč';
-    $('resLeadsVal').textContent = leadsPerPayment;
-
-    // Color coding
-    const resM = $('resMargin');
-    resM.className = 'calc-result ' + (margin > 0 ? 'positive' : margin < 0 ? 'negative' : 'neutral');
-    $('resBreakeven').className = 'calc-result ' + (conv >= beConv ? 'positive' : 'neutral');
-    $('resCPA').className = 'calc-result ' + (costPerPayment < price ? 'positive' : 'negative');
-
-    // Cost breakdown bar
-    const total = freeCost || 1;
-    const aiAmt = freeCost * 0.45;
-    const scrapeAmt = freeCost * 0.28;
-    const infraAmt = freeCost * 0.18;
-    const otherAmt = Math.max(0, freeCost - Math.round(aiAmt) - Math.round(scrapeAmt) - Math.round(infraAmt));
-    $('costBarAI').style.width = (aiAmt/total*100) + '%';
-    $('costBarAI').textContent = freeCost > 2 ? Math.round(aiAmt) + ' Kč' : '';
-    $('costBarScrape').style.width = (scrapeAmt/total*100) + '%';
-    $('costBarScrape').textContent = freeCost > 4 ? Math.round(scrapeAmt) + ' Kč' : '';
-    $('costBarInfra').style.width = (infraAmt/total*100) + '%';
-    $('costBarInfra').textContent = freeCost > 8 ? Math.round(infraAmt) + ' Kč' : '';
-    $('costBarOther').style.width = (otherAmt/total*100) + '%';
-    $('costBarOther').textContent = '';
-    $('costTotalLabel').textContent = fmt(freeCost);
-
-    // Monthly simulation
-    const adsBudget = +sliders.adsBudget.value;
-    const cpc = +sliders.cpc.value;
-    const lpConv = +sliders.lpConv.value;
-
-    $('calcAdsBudgetVal').textContent = fmt(adsBudget);
-    $('calcCPCVal').textContent = fmt(cpc);
-    $('calcLPConvVal').textContent = fmt(lpConv);
+    const costPerLeadTotal = adsCostPerLead + freeCost;
+    const cpa = leadsPerPayment * costPerLeadTotal + paidCost;
 
     const clicks = Math.floor(adsBudget / cpc);
     const leads = Math.floor(clicks * lpConv / 100);
@@ -833,59 +822,124 @@ function updateCalc() {
     const revenue = paid * price;
     const totalCost = adsBudget + leads * freeCost + paid * paidCost;
     const profit = revenue - totalCost;
+    const roas = totalCost > 0 ? revenue / totalCost : 0;
 
-    $('simClicks').textContent = fmt(clicks);
-    $('simLeads').textContent = fmt(leads);
-    $('simPaid').textContent = fmt(paid);
-    $('simProfitVal').textContent = (profit >= 0 ? '+' : '') + fmt(Math.round(profit)) + ' Kč';
+    return { adsCostPerLead, leadsPerPayment, costPerLeadTotal, cpa, clicks, leads, paid, revenue, totalCost, profit, roas };
+}
 
-    const profitEl = $('simProfit');
-    profitEl.className = 'calc-result ' + (profit > 0 ? 'positive' : profit < 0 ? 'negative' : 'neutral');
+function updateCalc() {
+    const price = +sliders.price.value;
+    const conv = +sliders.conv.value;
+    const freeCost = +sliders.freeCost.value;
+    const paidCost = +sliders.paidCost.value;
+    const adsBudget = +sliders.adsBudget.value;
+    const cpc = +sliders.cpc.value;
+    const lpConv = +sliders.lpConv.value;
 
-    $('simBreakdown').innerHTML =
-        '<span class="comment">// Měsíční rozpočet</span>\n' +
-        'Meta Ads:        ' + fmt(adsBudget) + ' Kč\n' +
-        'Free audity:     ' + fmt(leads) + ' × ' + fmt(freeCost) + ' Kč = <span class="warn">' + fmt(leads * freeCost) + ' Kč</span>\n' +
-        'Paid audity:     ' + fmt(paid) + ' × ' + fmt(paidCost) + ' Kč = <span class="warn">' + fmt(paid * paidCost) + ' Kč</span>\n' +
+    // Update displayed values
+    $('calcPriceVal').textContent = fmt(price);
+    $('calcConvVal').textContent = conv;
+    $('calcFreeCostVal').textContent = fmt(freeCost);
+    $('calcPaidCostVal').textContent = fmt(paidCost);
+    $('calcAdsBudgetVal').textContent = fmt(adsBudget);
+    $('calcCPCVal').textContent = fmt(cpc);
+    $('calcLPConvVal').textContent = fmt(lpConv);
+
+    const m = calcModel(price, conv, freeCost, paidCost, adsBudget, cpc, lpConv);
+
+    // Funnel visualization
+    $('funnelClicks').textContent = fmt(m.clicks);
+    $('funnelClicksCost').textContent = '× ' + fmt(cpc) + ' Kč';
+    $('funnelLeads').textContent = fmt(m.leads);
+    $('funnelLeadsCost').textContent = '× ' + fmt(freeCost) + ' Kč';
+    $('funnelPaid').textContent = fmt(m.paid);
+    $('funnelPaidCost').textContent = '× ' + fmt(paidCost) + ' Kč';
+    $('funnelRevenue').textContent = fmt(m.revenue) + ' Kč';
+    $('funnelRevenuePrice').textContent = '× ' + fmt(price) + ' Kč';
+
+    // Results
+    $('resProfitVal').textContent = (m.profit >= 0 ? '+' : '') + fmt(Math.round(m.profit)) + ' Kč';
+    $('resCPAVal').textContent = fmt(Math.round(m.cpa)) + ' Kč';
+    $('resROASVal').textContent = m.roas.toFixed(2) + '×';
+    $('resAdsCostPerLeadVal').textContent = fmt(Math.round(m.adsCostPerLead)) + ' Kč';
+
+    // Color coding
+    $('resProfit').className = 'calc-result ' + (m.profit > 0 ? 'positive' : m.profit < 0 ? 'negative' : 'neutral');
+    $('resCPA').className = 'calc-result ' + (m.cpa < price ? 'positive' : 'negative');
+    $('resROAS').className = 'calc-result ' + (m.roas > 1 ? 'positive' : m.roas >= 0.8 ? 'neutral' : 'negative');
+
+    // CPA breakdown bar
+    const adsPart = m.leadsPerPayment * m.adsCostPerLead;
+    const auditPart = m.leadsPerPayment * freeCost;
+    const total = m.cpa || 1;
+    $('costBarAds').style.width = (adsPart / total * 100) + '%';
+    $('costBarAds').textContent = adsPart > total * 0.08 ? fmt(Math.round(adsPart)) + ' Kč' : '';
+    $('costBarAudit').style.width = (auditPart / total * 100) + '%';
+    $('costBarAudit').textContent = auditPart > total * 0.08 ? fmt(Math.round(auditPart)) + ' Kč' : '';
+    $('costBarPaid').style.width = (paidCost / total * 100) + '%';
+    $('costBarPaid').textContent = paidCost > total * 0.08 ? fmt(paidCost) + ' Kč' : '';
+    $('cpaTotalLabel').textContent = fmt(Math.round(m.cpa));
+
+    // Detailed breakdown
+    $('costBreakdown').innerHTML =
+        '<span class="comment">// Rozpad nákladů na 1 platbu (CPA)</span>\n' +
+        'Meta Ads:      ' + m.leadsPerPayment + ' leadů × ' + fmt(Math.round(m.adsCostPerLead)) + ' Kč/lead = <span class="warn">' + fmt(Math.round(adsPart)) + ' Kč</span>\n' +
+        'Free audity:   ' + m.leadsPerPayment + ' leadů × ' + fmt(freeCost) + ' Kč/audit = <span class="warn">' + fmt(Math.round(auditPart)) + ' Kč</span>\n' +
+        'Paid audit:    1 × ' + fmt(paidCost) + ' Kč = <span class="warn">' + fmt(paidCost) + ' Kč</span>\n' +
         '<span class="comment">─────────────────────────────────────</span>\n' +
-        'Celkové náklady: <span class="bad">' + fmt(Math.round(totalCost)) + ' Kč</span>\n' +
-        'Tržby:           ' + fmt(paid) + ' × ' + fmt(price) + ' Kč = <span class="blue">' + fmt(revenue) + ' Kč</span>\n' +
-        'Výsledek:        <span class="' + (profit >= 0 ? 'highlight' : 'bad') + '">' + (profit >= 0 ? '+' : '') + fmt(Math.round(profit)) + ' Kč</span>';
+        'CPA celkem:    <span class="bad">' + fmt(Math.round(m.cpa)) + ' Kč</span>\n' +
+        'Cena reportu:  <span class="blue">' + fmt(price) + ' Kč</span>\n' +
+        'Marže/platbu:  <span class="' + (price - m.cpa >= 0 ? 'highlight' : 'bad') + '">' + (price - m.cpa >= 0 ? '+' : '') + fmt(Math.round(price - m.cpa)) + ' Kč</span>\n\n' +
+        '<span class="comment">// Měsíční projekce (budget ' + fmt(adsBudget) + ' Kč)</span>\n' +
+        'Tržby:         ' + fmt(m.paid) + ' × ' + fmt(price) + ' Kč = <span class="blue">' + fmt(m.revenue) + ' Kč</span>\n' +
+        'Náklady:       ' + fmt(adsBudget) + ' + ' + fmt(m.leads * freeCost) + ' + ' + fmt(m.paid * paidCost) + ' = <span class="bad">' + fmt(Math.round(m.totalCost)) + ' Kč</span>\n' +
+        'Výsledek:      <span class="' + (m.profit >= 0 ? 'highlight' : 'bad') + '">' + (m.profit >= 0 ? '+' : '') + fmt(Math.round(m.profit)) + ' Kč / měsíc</span>';
 
-    // Dynamic financial table
-    const beConvTable = freeCost > 0 ? (freeCost / (price - paidCost)) * 100 : 0;
-    const tableConvs = [beConvTable, 3, 5, 8, 10, 15, 20].filter(c => c > 0 && c <= 25);
-    // Deduplicate close values (within 0.5%)
-    const uniqueConvs = [];
-    tableConvs.sort((a, b) => a - b).forEach(c => {
-        if (!uniqueConvs.some(u => Math.abs(u - c) < 0.5)) uniqueConvs.push(c);
-    });
-
+    // Dynamic financial table — scenarios by conversion rate
+    const tableConvs = [2, 3, 5, 8, 10, 15, 20].filter(c => c <= 25);
     const tbody = $('finTableBody');
-    tbody.innerHTML = uniqueConvs.map(c => {
-        const leads = Math.ceil(100 / c);
-        const leadCost = leads * freeCost;
-        const total = leadCost + paidCost;
-        const result = price - total;
-        const isBE = Math.abs(c - beConvTable) < 0.5;
-        const tagClass = isBE ? 'tag-yellow' : (result >= 0 ? 'tag-green' : 'tag-red');
-        const resultText = isBE ? '~0 Kč (BE)' : ((result >= 0 ? '+' : '') + fmt(Math.round(result)) + ' Kč');
-        const rowStyle = isBE ? ' style="background: rgba(59, 130, 246, 0.05);"' : '';
-        const tdStyle = isBE ? ' style="color: var(--blue); font-weight: 700;"' : '';
-        const convLabel = isBE ? beConvTable.toFixed(1).replace('.', ',') : String(c).replace('.', ',');
-        return '<tr' + rowStyle + '><td class="mono"' + tdStyle + '>' + convLabel + ' %</td>' +
-            '<td class="mono">' + leads + '</td>' +
-            '<td class="mono">' + fmt(Math.round(leadCost)) + ' Kč</td>' +
-            '<td class="mono">' + fmt(paidCost) + ' Kč</td>' +
-            '<td class="mono">' + fmt(Math.round(total)) + ' Kč</td>' +
+    tbody.innerHTML = tableConvs.map(c => {
+        const s = calcModel(price, c, freeCost, paidCost, adsBudget, cpc, lpConv);
+        const tagClass = s.profit > 0 ? 'tag-green' : s.profit > -1000 ? 'tag-yellow' : 'tag-red';
+        const resultText = (s.profit >= 0 ? '+' : '') + fmt(Math.round(s.profit)) + ' Kč';
+        const isCurrent = Math.abs(c - conv) < 0.5;
+        const rowStyle = isCurrent ? ' style="background: rgba(59, 130, 246, 0.08);"' : '';
+        const tdStyle = isCurrent ? ' style="color: var(--blue); font-weight: 700;"' : '';
+        return '<tr' + rowStyle + '>' +
+            '<td class="mono"' + tdStyle + '>' + String(c).replace('.', ',') + ' %' + (isCurrent ? ' ←' : '') + '</td>' +
+            '<td class="mono">' + fmt(s.paid) + '</td>' +
+            '<td class="mono">' + fmt(s.revenue) + ' Kč</td>' +
+            '<td class="mono">' + fmt(adsBudget) + ' Kč</td>' +
+            '<td class="mono">' + fmt(Math.round(s.leads * freeCost + s.paid * paidCost)) + ' Kč</td>' +
+            '<td class="mono">' + fmt(Math.round(s.totalCost)) + ' Kč</td>' +
             '<td><span class="tag ' + tagClass + '">' + resultText + '</span></td></tr>';
     }).join('');
 
-    drawChart(price, freeCost, paidCost);
+    // Dynamic financial table — scenarios by budget
+    const budgets = [5000, 10000, 15000, 20000, 30000, 50000];
+    const tbodyBudget = $('finTableBudget');
+    tbodyBudget.innerHTML = budgets.map(b => {
+        const s = calcModel(price, conv, freeCost, paidCost, b, cpc, lpConv);
+        const tagClass = s.profit > 0 ? 'tag-green' : s.profit > -1000 ? 'tag-yellow' : 'tag-red';
+        const resultText = (s.profit >= 0 ? '+' : '') + fmt(Math.round(s.profit)) + ' Kč';
+        const isCurrent = b === adsBudget;
+        const rowStyle = isCurrent ? ' style="background: rgba(59, 130, 246, 0.08);"' : '';
+        const tdStyle = isCurrent ? ' style="color: var(--blue); font-weight: 700;"' : '';
+        return '<tr' + rowStyle + '>' +
+            '<td class="mono"' + tdStyle + '>' + fmt(b) + ' Kč' + (isCurrent ? ' ←' : '') + '</td>' +
+            '<td class="mono">' + fmt(s.clicks) + '</td>' +
+            '<td class="mono">' + fmt(s.leads) + '</td>' +
+            '<td class="mono">' + fmt(s.paid) + '</td>' +
+            '<td class="mono">' + fmt(s.revenue) + ' Kč</td>' +
+            '<td class="mono">' + fmt(Math.round(s.totalCost)) + ' Kč</td>' +
+            '<td><span class="tag ' + tagClass + '">' + resultText + '</span></td></tr>';
+    }).join('');
+
+    drawChart(price, conv, freeCost, paidCost, adsBudget, cpc, lpConv);
 }
 
-// ── Break-even chart (Canvas) ──
-function drawChart(price, freeCost, paidCost) {
+// ── Break-even chart (Canvas) — monthly profit/loss by conversion ──
+function drawChart(price, conv, freeCost, paidCost, adsBudget, cpc, lpConv) {
     const canvas = $('beChart');
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
@@ -898,37 +952,37 @@ function drawChart(price, freeCost, paidCost) {
     canvas.style.height = h + 'px';
     ctx.scale(dpr, dpr);
 
-    // Config
-    const pad = { top: 40, right: 30, bottom: 50, left: 70 };
+    const pad = { top: 40, right: 30, bottom: 50, left: 80 };
     const cw = w - pad.left - pad.right;
     const ch = h - pad.top - pad.bottom;
 
-    // Clear
     ctx.fillStyle = '#06060a';
     ctx.fillRect(0, 0, w, h);
 
-    // Data: conv 1-25%
+    // Data: conv 1-25%, monthly profit
     const points = [];
     let minY = Infinity, maxY = -Infinity;
+    let beConv = null;
     for (let c = 1; c <= 25; c += 0.5) {
-        const leads = Math.ceil(100 / c);
-        const cost = leads * freeCost + paidCost;
-        const margin = price - cost;
-        points.push({ conv: c, margin });
-        if (margin < minY) minY = margin;
-        if (margin > maxY) maxY = margin;
+        const s = calcModel(price, c, freeCost, paidCost, adsBudget, cpc, lpConv);
+        points.push({ conv: c, profit: s.profit });
+        if (s.profit < minY) minY = s.profit;
+        if (s.profit > maxY) maxY = s.profit;
+        // Find break-even crossing
+        if (beConv === null && s.profit >= 0) beConv = c;
     }
-    minY = Math.min(minY, -200);
-    maxY = Math.max(maxY, 200);
+    const padding = Math.max(Math.abs(minY), Math.abs(maxY)) * 0.15;
+    minY = Math.min(minY - padding, -1000);
+    maxY = Math.max(maxY + padding, 1000);
     const range = maxY - minY;
 
-    function toX(conv) { return pad.left + ((conv - 1) / 24) * cw; }
+    function toX(c) { return pad.left + ((c - 1) / 24) * cw; }
     function toY(val) { return pad.top + ch - ((val - minY) / range) * ch; }
 
     // Grid
     ctx.strokeStyle = '#1e1e2e';
     ctx.lineWidth = 1;
-    const ySteps = 5;
+    const ySteps = 6;
     for (let i = 0; i <= ySteps; i++) {
         const val = minY + (range / ySteps) * i;
         const y = toY(val);
@@ -936,7 +990,7 @@ function drawChart(price, freeCost, paidCost) {
         ctx.fillStyle = '#606078';
         ctx.font = '11px JetBrains Mono';
         ctx.textAlign = 'right';
-        ctx.fillText(Math.round(val) + ' Kč', pad.left - 10, y + 4);
+        ctx.fillText(fmt(Math.round(val)) + ' Kč', pad.left - 10, y + 4);
     }
 
     // X labels
@@ -956,90 +1010,86 @@ function drawChart(price, freeCost, paidCost) {
     ctx.beginPath(); ctx.moveTo(pad.left, zeroY); ctx.lineTo(w - pad.right, zeroY); ctx.stroke();
     ctx.setLineDash([]);
 
-    // Break-even point
-    const beConv = (freeCost / (price - paidCost)) * 100;
-    if (beConv > 1 && beConv < 25) {
+    // Break-even vertical
+    if (beConv !== null && beConv > 1 && beConv < 25) {
         const beX = toX(beConv);
         ctx.strokeStyle = 'rgba(234, 179, 8, 0.6)';
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
         ctx.beginPath(); ctx.moveTo(beX, pad.top); ctx.lineTo(beX, h - pad.bottom); ctx.stroke();
         ctx.setLineDash([]);
-
-        // BE label
         ctx.fillStyle = '#EAB308';
         ctx.font = 'bold 12px JetBrains Mono';
         ctx.textAlign = 'center';
-        ctx.fillText('BE: ' + beConv.toFixed(1) + '%', beX, pad.top - 10);
+        ctx.fillText('BE: ~' + beConv.toFixed(0) + '%', beX, pad.top - 10);
     }
 
     // Profit zone fill
     ctx.fillStyle = 'rgba(34, 197, 94, 0.06)';
     ctx.beginPath();
-    ctx.moveTo(toX(Math.max(beConv, 1)), zeroY);
-    for (let c = Math.max(beConv, 1); c <= 25; c += 0.5) {
-        const leads = Math.ceil(100 / c);
-        const cost = leads * freeCost + paidCost;
-        const margin = price - cost;
-        ctx.lineTo(toX(c), toY(Math.max(margin, 0)));
-    }
-    ctx.lineTo(toX(25), zeroY);
-    ctx.closePath();
-    ctx.fill();
+    let started = false;
+    points.forEach(p => {
+        if (p.profit >= 0) {
+            if (!started) { ctx.moveTo(toX(p.conv), zeroY); started = true; }
+            ctx.lineTo(toX(p.conv), toY(p.profit));
+        }
+    });
+    if (started) { ctx.lineTo(toX(25), zeroY); ctx.closePath(); ctx.fill(); }
 
     // Loss zone fill
     ctx.fillStyle = 'rgba(239, 68, 68, 0.06)';
     ctx.beginPath();
-    ctx.moveTo(toX(1), zeroY);
-    for (let c = 1; c <= Math.min(beConv, 25); c += 0.5) {
-        const leads = Math.ceil(100 / c);
-        const cost = leads * freeCost + paidCost;
-        const margin = price - cost;
-        ctx.lineTo(toX(c), toY(Math.min(margin, 0)));
+    started = false;
+    points.forEach(p => {
+        if (p.profit < 0) {
+            if (!started) { ctx.moveTo(toX(p.conv), zeroY); started = true; }
+            ctx.lineTo(toX(p.conv), toY(p.profit));
+        }
+    });
+    if (started) {
+        const lastLoss = points.filter(p => p.profit < 0).pop();
+        if (lastLoss) ctx.lineTo(toX(lastLoss.conv), zeroY);
+        ctx.closePath(); ctx.fill();
     }
-    ctx.lineTo(toX(Math.min(beConv, 25)), zeroY);
-    ctx.closePath();
-    ctx.fill();
 
     // Main line
-    ctx.strokeStyle = var_blue;
+    ctx.strokeStyle = '#3B82F6';
     ctx.lineWidth = 2.5;
     ctx.lineJoin = 'round';
     ctx.beginPath();
     points.forEach((p, i) => {
         const x = toX(p.conv);
-        const y = toY(p.margin);
+        const y = toY(p.profit);
         i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.stroke();
 
     // Current position dot
-    const currentConv = +sliders.conv.value;
-    const currentLeads = Math.ceil(100 / currentConv);
-    const currentMargin = price - (currentLeads * freeCost + paidCost);
-    const dotX = toX(currentConv);
-    const dotY = toY(currentMargin);
+    const currentModel = calcModel(price, conv, freeCost, paidCost, adsBudget, cpc, lpConv);
+    const dotX = toX(conv);
+    const dotY = toY(currentModel.profit);
 
-    ctx.fillStyle = currentMargin >= 0 ? '#22C55E' : '#EF4444';
-    ctx.beginPath(); ctx.arc(dotX, dotY, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = currentModel.profit >= 0 ? '#22C55E' : '#EF4444';
+    ctx.beginPath(); ctx.arc(dotX, dotY, 7, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#0a0a0f';
     ctx.beginPath(); ctx.arc(dotX, dotY, 3, 0, Math.PI * 2); ctx.fill();
 
     // Dot label
-    ctx.fillStyle = var_text;
+    ctx.fillStyle = '#f0f0f5';
     ctx.font = 'bold 12px JetBrains Mono';
-    ctx.textAlign = 'left';
-    ctx.fillText((currentMargin >= 0 ? '+' : '') + Math.round(currentMargin) + ' Kč', dotX + 12, dotY + 4);
+    ctx.textAlign = conv > 18 ? 'right' : 'left';
+    const labelOffset = conv > 18 ? -14 : 14;
+    ctx.fillText((currentModel.profit >= 0 ? '+' : '') + fmt(Math.round(currentModel.profit)) + ' Kč/měs', dotX + labelOffset, dotY - 10);
 
     // Axis labels
     ctx.fillStyle = '#9090a8';
     ctx.font = '12px Inter';
     ctx.textAlign = 'center';
-    ctx.fillText('Konverzní poměr (%)', w / 2, h - 8);
+    ctx.fillText('Konverzní poměr free → paid (%)', w / 2, h - 8);
     ctx.save();
     ctx.translate(16, h / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillText('Marže na platbu (Kč)', 0, 0);
+    ctx.fillText('Měsíční výsledek (Kč)', 0, 0);
     ctx.restore();
 
     // Legend
@@ -1049,29 +1099,23 @@ function drawChart(price, freeCost, paidCost) {
     ctx.fillStyle = 'rgba(34, 197, 94, 0.3)';
     ctx.fillRect(lx, pad.top + 4, 12, 12);
     ctx.fillStyle = '#9090a8';
-    ctx.fillText('Ziskové pásmo', lx + 18, pad.top + 14);
+    ctx.fillText('Zisk', lx + 18, pad.top + 14);
 
     ctx.fillStyle = 'rgba(239, 68, 68, 0.3)';
-    ctx.fillRect(lx + 130, pad.top + 4, 12, 12);
+    ctx.fillRect(lx + 60, pad.top + 4, 12, 12);
     ctx.fillStyle = '#9090a8';
-    ctx.fillText('Ztrátové pásmo', lx + 148, pad.top + 14);
-}
+    ctx.fillText('Ztráta', lx + 78, pad.top + 14);
 
-const var_blue = '#3B82F6';
-const var_text = '#f0f0f5';
+    ctx.fillStyle = '#9090a8';
+    ctx.fillText('Budget: ' + fmt(adsBudget) + ' Kč/měs | CPC: ' + fmt(cpc) + ' Kč | LP conv: ' + lpConv + '%', lx + 140, pad.top + 14);
+}
 
 // Default values for reset
 const defaults = { price: 399, conv: 8, freeCost: 3, paidCost: 50, adsBudget: 15000, cpc: 12, lpConv: 40 };
 
 // Reset button
 $('resetCalc').addEventListener('click', function() {
-    sliders.price.value = defaults.price;
-    sliders.conv.value = defaults.conv;
-    sliders.freeCost.value = defaults.freeCost;
-    sliders.paidCost.value = defaults.paidCost;
-    sliders.adsBudget.value = defaults.adsBudget;
-    sliders.cpc.value = defaults.cpc;
-    sliders.lpConv.value = defaults.lpConv;
+    Object.keys(defaults).forEach(k => sliders[k].value = defaults[k]);
     updateCalc();
 });
 
