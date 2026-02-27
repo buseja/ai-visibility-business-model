@@ -590,7 +590,7 @@ if (konverze > 7% && plateb > 20) {
         <div class="section-header">
             <div class="section-number">05</div>
             <h2>Finanční <span>model</span></h2>
-            <p class="section-sub">Při nákladu 3 Kč na free audit nám stačí pod 1 % konverze na break-even. Tabulka ukazuje marži při různých konverzních poměrech.</p>
+            <p class="section-sub">Tabulka se přepočítává podle parametrů v kalkulačce výše. Změňte cenu nebo náklady a čísla se aktualizují.</p>
         </div>
 
         <div class="table-wrap reveal" style="margin-bottom: 32px;">
@@ -598,13 +598,7 @@ if (konverze > 7% && plateb > 20) {
                 <thead>
                     <tr><th>Konverze</th><th>Leadů na platbu</th><th>Náklad leady</th><th>+ Paid audit</th><th>Celkem</th><th>Výsledek</th></tr>
                 </thead>
-                <tbody>
-                    <tr style="background: rgba(59, 130, 246, 0.05);"><td class="mono" style="color: var(--blue); font-weight: 700;">0,9 %</td><td class="mono">112</td><td class="mono">336 Kč</td><td class="mono">50 Kč</td><td class="mono">386 Kč</td><td><span class="tag tag-yellow">~0 Kč (BE)</span></td></tr>
-                    <tr><td class="mono">3 %</td><td class="mono">33</td><td class="mono">99 Kč</td><td class="mono">50 Kč</td><td class="mono">149 Kč</td><td><span class="tag tag-green">+250 Kč</span></td></tr>
-                    <tr><td class="mono">5 %</td><td class="mono">20</td><td class="mono">60 Kč</td><td class="mono">50 Kč</td><td class="mono">110 Kč</td><td><span class="tag tag-green">+289 Kč</span></td></tr>
-                    <tr><td class="mono">8 %</td><td class="mono">13</td><td class="mono">39 Kč</td><td class="mono">50 Kč</td><td class="mono">89 Kč</td><td><span class="tag tag-green">+310 Kč</span></td></tr>
-                    <tr><td class="mono">10 %</td><td class="mono">10</td><td class="mono">30 Kč</td><td class="mono">50 Kč</td><td class="mono">80 Kč</td><td><span class="tag tag-green">+319 Kč</span></td></tr>
-                    <tr><td class="mono">15 %</td><td class="mono">7</td><td class="mono">21 Kč</td><td class="mono">50 Kč</td><td class="mono">71 Kč</td><td><span class="tag tag-green">+328 Kč</span></td></tr>
+                <tbody id="finTableBody">
                 </tbody>
             </table>
         </div>
@@ -857,6 +851,35 @@ function updateCalc() {
         'Celkové náklady: <span class="bad">' + fmt(Math.round(totalCost)) + ' Kč</span>\n' +
         'Tržby:           ' + fmt(paid) + ' × ' + fmt(price) + ' Kč = <span class="blue">' + fmt(revenue) + ' Kč</span>\n' +
         'Výsledek:        <span class="' + (profit >= 0 ? 'highlight' : 'bad') + '">' + (profit >= 0 ? '+' : '') + fmt(Math.round(profit)) + ' Kč</span>';
+
+    // Dynamic financial table
+    const beConvTable = freeCost > 0 ? (freeCost / (price - paidCost)) * 100 : 0;
+    const tableConvs = [beConvTable, 3, 5, 8, 10, 15, 20].filter(c => c > 0 && c <= 25);
+    // Deduplicate close values (within 0.5%)
+    const uniqueConvs = [];
+    tableConvs.sort((a, b) => a - b).forEach(c => {
+        if (!uniqueConvs.some(u => Math.abs(u - c) < 0.5)) uniqueConvs.push(c);
+    });
+
+    const tbody = $('finTableBody');
+    tbody.innerHTML = uniqueConvs.map(c => {
+        const leads = Math.ceil(100 / c);
+        const leadCost = leads * freeCost;
+        const total = leadCost + paidCost;
+        const result = price - total;
+        const isBE = Math.abs(c - beConvTable) < 0.5;
+        const tagClass = isBE ? 'tag-yellow' : (result >= 0 ? 'tag-green' : 'tag-red');
+        const resultText = isBE ? '~0 Kč (BE)' : ((result >= 0 ? '+' : '') + fmt(Math.round(result)) + ' Kč');
+        const rowStyle = isBE ? ' style="background: rgba(59, 130, 246, 0.05);"' : '';
+        const tdStyle = isBE ? ' style="color: var(--blue); font-weight: 700;"' : '';
+        const convLabel = isBE ? beConvTable.toFixed(1).replace('.', ',') : String(c).replace('.', ',');
+        return '<tr' + rowStyle + '><td class="mono"' + tdStyle + '>' + convLabel + ' %</td>' +
+            '<td class="mono">' + leads + '</td>' +
+            '<td class="mono">' + fmt(Math.round(leadCost)) + ' Kč</td>' +
+            '<td class="mono">' + fmt(paidCost) + ' Kč</td>' +
+            '<td class="mono">' + fmt(Math.round(total)) + ' Kč</td>' +
+            '<td><span class="tag ' + tagClass + '">' + resultText + '</span></td></tr>';
+    }).join('');
 
     drawChart(price, freeCost, paidCost);
 }
